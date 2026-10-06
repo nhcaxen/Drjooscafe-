@@ -1,0 +1,184 @@
+@import "tailwindcss";
+
+:root {
+  --brand-primary: #CCE92D;
+  --brand-secondary: #18181B;
+  --brand-background: #F8F9FA;
+  --brand-surface: #FFFFFF;
+  --brand-text: #18181B;
+  --brand-muted: #71717A;
+  --brand-border: #E4E4E7;
+  --brand-accent: #B8D61A;
+  --brand-primary-dark: #627702;
+  --brand-primary-light: #F8FDDE;
+  --brand-primary-hover: #BEDB21;
+}
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--brand-background);
+    color: var(--brand-text);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .font-brand {
+    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Hide scrollbars for clean mobile horizontal category carousels */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Touch active scale utility */
+.active-press {
+  transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.active-press:active {
+  transform: scale(0.97);
+}
+
+/* Chef Sizzling Pan Toss & Rising Steam Animation */
+@keyframes pan-sizzle-toss {
+  0%, 100% {
+    transform: rotate(0deg) translateY(0);
+  }
+  15% {
+    transform: rotate(-3deg) translateY(0.5px);
+  }
+  30% {
+    transform: rotate(2deg) translateY(-0.5px);
+  }
+  45% {
+    transform: rotate(-1deg) translateY(0);
+  }
+  60% {
+    /* Toss action */
+    transform: rotate(-8deg) translateY(-3px);
+  }
+  72% {
+    transform: rotate(3deg) translateY(1px);
+  }
+  85% {
+    transform: rotate(0deg) translateY(-0.5px);
+  }
+}
+
+@keyframes food-toss {
+  0%, 45%, 100% {
+    transform: translateY(0) scale(0.9);
+    opacity: 0.85;
+  }
+  60% {
+    /* Food jumps up out of pan */
+    transform: translateY(-5px) scale(1.1);
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(0.5px) scale(1);
+    opacity: 0.9;
+  }
+}
+
+@keyframes steam-rise-1 {
+  0% {
+    transform: translateY(2px) scaleX(0.8);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.9;
+  }
+  70% {
+    opacity: 0.45;
+    transform: translateY(-5px) scaleX(1.15);
+  }
+  100% {
+    transform: translateY(-9px) scaleX(1.35);
+    opacity: 0;
+  }
+}
+
+@keyframes steam-rise-2 {
+  0% {
+    transform: translateY(2px) scaleX(0.9);
+    opacity: 0;
+  }
+  35% {
+    opacity: 0.9;
+  }
+  75% {
+    opacity: 0.4;
+    transform: translateY(-6px) scaleX(1.2);
+  }
+  100% {
+    transform: translateY(-10px) scaleX(1.4);
+    opacity: 0;
+  }
+}
+
+.animate-pan-toss {
+  animation: pan-sizzle-toss 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: 19px 15px;
+}
+
+.animate-food-jump {
+  animation: food-toss 1.8s cubic-bezier(0.2, 0.8, 0.4, 1) infinite;
+}
+
+.animate-steam-1 {
+  animation: steam-rise-1 1.6s ease-out infinite;
+}
+
+.animate-steam-2 {
+  animation: steam-rise-2 1.6s ease-out 0.6s infinite;
+}
+
+/* Stove Burner Flame Under Pan */
+@keyframes burner-flame {
+  0%, 100% {
+    transform: scaleY(0.95) scaleX(1);
+    opacity: 0.9;
+    filter: drop-shadow(0 0 3px rgba(249, 115, 22, 0.9));
+  }
+  50% {
+    transform: scaleY(1.3) scaleX(0.9);
+    opacity: 1;
+    filter: drop-shadow(0 0 5px rgba(251, 191, 36, 1));
+  }
+}
+
+@keyframes burner-flame-alt {
+  0%, 100% {
+    transform: scaleY(1.25) scaleX(0.92);
+    opacity: 1;
+    filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.9));
+  }
+  50% {
+    transform: scaleY(0.85) scaleX(1.05);
+    opacity: 0.85;
+    filter: drop-shadow(0 0 3px rgba(249, 115, 22, 0.8));
+  }
+}
+
+.animate-burner-flame-1 {
+  animation: burner-flame 0.65s ease-in-out infinite alternate;
+  transform-origin: 9.5px 21px;
+}
+
+.animate-burner-flame-2 {
+  animation: burner-flame-alt 0.8s ease-in-out infinite alternate;
+  transform-origin: 7px 21px;
+}
+
+.animate-burner-flame-3 {
+  animation: burner-flame 0.75s ease-in-out 0.2s infinite alternate;
+  transform-origin: 12px 21px;
+}
+

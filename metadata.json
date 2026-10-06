@@ -1,0 +1,6 @@
+{
+  "name": "Dr. Joos Cafe — QR Digital Menu, Indore",
+  "description": "Official client-facing mobile digital QR table menu for Dr. Joos Cafe, Indore. Browse fresh juices, shakes, combos, sandwiches, pizzas, maggi, and platters.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
