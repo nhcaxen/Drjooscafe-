@@ -13,6 +13,7 @@ import { VegIndicator } from './components/VegIndicator';
 import { OrderStatusModal } from './components/OrderStatusModal';
 import { ActiveOrderWidget } from './components/ActiveOrderWidget';
 import { TableSelectorModal } from './components/TableSelectorModal';
+import { DesktopCartSidebar } from './components/DesktopCartSidebar';
 import { Search, MapPin, Sparkles, CheckCircle2, ShieldCheck, ChevronDown } from 'lucide-react';
 
 export default function App() {
@@ -258,19 +259,21 @@ export default function App() {
   const totalCartCount = cart.reduce((acc, c) => acc + c.quantity, 0);
 
   return (
-    <div className="min-h-screen bg-[var(--brand-background)] text-[var(--brand-text)] flex flex-col pb-28">
-      {/* Mobile Top Header */}
+    <div className="min-h-screen bg-[var(--brand-background)] text-[var(--brand-text)] flex flex-col pb-28 lg:pb-12">
+      {/* Top Header (Responsive max-w-7xl) */}
       <Header
         onToggleSearch={handleToggleSearch}
         onOpenCart={() => setIsCartOpen(true)}
         cartCount={totalCartCount}
         tableNumber={tableNumber}
+        onOpenTableSelector={() => setIsTableSelectorOpen(true)}
       />
 
-      <div className="max-w-md mx-auto w-full px-4 pt-2.5 pb-1">
+      {/* Sub-header / Search & Greeting Container */}
+      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-3 pb-1">
         {/* Search Bar */}
         {(isSearchVisible || isSearching) && (
-          <div className="mb-2.5 animate-in fade-in duration-150">
+          <div className="mb-3 max-w-xl mx-auto lg:mx-0 animate-in fade-in duration-150">
             <SearchBar
               inputRef={searchInputRef}
               value={searchQuery}
@@ -279,29 +282,31 @@ export default function App() {
           </div>
         )}
 
-        {/* Time-Based Greeting & Table Chooser - Directly on page (No card wrapper) */}
+        {/* Time-Based Greeting & Table Chooser */}
         {!isSearching && (
-          <div className="flex items-center justify-between px-1 pt-0.5 pb-2.5">
+          <div className="flex items-center justify-between pb-3 border-b border-zinc-200/60 mb-1">
             <div className="flex flex-col">
-              <span className="text-sm font-black text-zinc-950 block leading-tight">
+              <span className="text-base sm:text-lg font-black text-zinc-950 block leading-tight">
                 {timeGreeting.greeting}
               </span>
-              <span className="text-[11px] text-[var(--brand-muted)] font-medium mt-0.5">
+              <span className="text-xs sm:text-sm text-[var(--brand-muted)] font-medium mt-0.5">
                 {timeGreeting.subtext}
               </span>
             </div>
 
-            {/* Minimalist, Cool, Non-Bold Table Selector */}
-            <button
-              onClick={() => setIsTableSelectorOpen(true)}
-              className="flex items-center gap-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-950 bg-zinc-100/80 hover:bg-zinc-100 px-2.5 py-1 rounded-full transition-colors active-press cursor-pointer shrink-0"
-              title="Choose Table"
-              aria-label="Choose table"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/80" />
-              <span>{tableNumber === 'Takeaway' ? 'Parcel' : (tableNumber ? `Table ${tableNumber}` : 'Choose Table')}</span>
-              <ChevronDown className="w-3 h-3 text-zinc-400 stroke-[1.8]" />
-            </button>
+            {/* Mobile/Tablet Table Selector (Desktop has it in header and sidebar) */}
+            <div className="lg:hidden">
+              <button
+                onClick={() => setIsTableSelectorOpen(true)}
+                className="flex items-center gap-1.5 text-xs font-medium text-zinc-700 hover:text-zinc-950 bg-zinc-100 hover:bg-zinc-200/80 px-3 py-1.5 rounded-full transition-colors active-press cursor-pointer shrink-0 border border-zinc-200/60"
+                title="Choose Table"
+                aria-label="Choose table"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <span>{tableNumber === 'Takeaway' ? 'Parcel' : (tableNumber ? `Table ${tableNumber}` : 'Choose Table')}</span>
+                <ChevronDown className="w-3 h-3 text-zinc-400 stroke-[1.8]" />
+              </button>
+            </div>
           </div>
         )}
       </div>
@@ -317,89 +322,116 @@ export default function App() {
         />
       )}
 
-      {/* Main Content Area */}
-      <main className="max-w-md mx-auto w-full px-4 pt-3 flex-1 space-y-4">
-        {/* Featured Picks Section (only on first category and not searching) */}
-        {!isSearching && activeCategory === CATEGORIES[0] && (
-          <FeaturedItems
-            items={MENU_ITEMS}
-            getItemQuantity={getItemQuantity}
-            onOpenItem={(item) => setSelectedItem(item)}
-            onAddToCart={(item) => handleAddToCart(item)}
-            onUpdateQuantity={handleUpdateQuantity}
-          />
-        )}
+      {/* Responsive Main Layout: Menu Left + Sticky Cart Right on Desktop */}
+      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-4 flex-1">
+        <div className="lg:grid lg:grid-cols-12 lg:gap-8 items-start">
+          {/* Main Content Area */}
+          <main className="lg:col-span-8 space-y-5 min-w-0">
+            {/* Featured Picks Section (only on first category and not searching) */}
+            {!isSearching && activeCategory === CATEGORIES[0] && (
+              <FeaturedItems
+                items={MENU_ITEMS}
+                getItemQuantity={getItemQuantity}
+                onOpenItem={(item) => setSelectedItem(item)}
+                onAddToCart={(item) => handleAddToCart(item)}
+                onUpdateQuantity={handleUpdateQuantity}
+              />
+            )}
 
-        {/* Search Empty State */}
-        {isSearching && displayedCategories.length === 0 && (
-          <div className="py-16 text-center space-y-2 bg-white rounded-xl border border-[var(--brand-border)] p-6">
-            <span className="text-3xl block">🔍</span>
-            <h3 className="font-bold text-sm text-[var(--brand-text)]">
-              No dishes found for "{searchQuery}"
-            </h3>
-            <p className="text-xs text-[var(--brand-muted)] max-w-xs mx-auto">
-              Try searching for "pizza", "paneer", "cold coffee", "maggi", or "sandwich".
-            </p>
-            <button
-              onClick={() => setSearchQuery('')}
-              className="mt-2 px-3.5 py-1.5 rounded-lg bg-[var(--brand-primary)] text-zinc-950 text-xs font-black active-press border border-[var(--brand-accent)] shadow-xs"
-            >
-              Clear Search
-            </button>
+            {/* Search Empty State */}
+            {isSearching && displayedCategories.length === 0 && (
+              <div className="py-16 text-center space-y-2 bg-white rounded-xl border border-[var(--brand-border)] p-6">
+                <span className="text-3xl block">🔍</span>
+                <h3 className="font-bold text-sm text-[var(--brand-text)]">
+                  No dishes found for "{searchQuery}"
+                </h3>
+                <p className="text-xs text-[var(--brand-muted)] max-w-xs mx-auto">
+                  Try searching for "pizza", "paneer", "cold coffee", "maggi", or "sandwich".
+                </p>
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="mt-2 px-3.5 py-1.5 rounded-lg bg-[var(--brand-primary)] text-zinc-950 text-xs font-black active-press border border-[var(--brand-accent)] shadow-xs cursor-pointer"
+                >
+                  Clear Search
+                </button>
+              </div>
+            )}
+
+            {/* Menu Sections & Dishes */}
+            {displayedCategories.map((group) => (
+              <MenuSection
+                key={group.category}
+                category={group.category}
+                items={group.items}
+                getItemQuantity={getItemQuantity}
+                onOpenDetails={(item) => setSelectedItem(item)}
+                onAddToCart={(item) => handleAddToCart(item)}
+                onUpdateQuantity={handleUpdateQuantity}
+              />
+            ))}
+
+            {/* Cafe Footer & Info */}
+            <footer className="pt-8 pb-6 border-t border-[var(--brand-border)] space-y-2.5 text-center text-xs text-[var(--brand-muted)]">
+              <div className="flex items-center justify-center gap-1.5 font-bold text-sm text-[var(--brand-text)]">
+                <span className="font-brand text-base text-zinc-950">Dr. <span className="text-[#889E00]">Joos</span></span>
+                <span>Cafe, Indore</span>
+              </div>
+
+              <p className="text-[11px] text-[var(--brand-muted)]">
+                400, Clerk Colony Rd, MR 9, Indore, Madhya Pradesh
+              </p>
+
+              <div className="flex items-center justify-center gap-3 text-[10px] text-[var(--brand-muted)] pt-1">
+                <span className="flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                  Pure Veg Kitchen
+                </span>
+                <span>•</span>
+                <span>FSSAI Lic. Certified</span>
+                <span>•</span>
+                <span>Taxes as applicable</span>
+              </div>
+            </footer>
+          </main>
+
+          {/* Desktop Right Sidebar (Cart & Live Order) */}
+          <div className="hidden lg:block lg:col-span-4">
+            <DesktopCartSidebar
+              cart={cart}
+              tableNumber={tableNumber}
+              onOpenTableSelector={() => setIsTableSelectorOpen(true)}
+              onUpdateQuantity={handleUpdateCartQuantityById}
+              onRemoveItem={handleRemoveFromCart}
+              onClearCart={handleClearCart}
+              onPlaceOrder={handlePlaceOrder}
+              placedOrder={placedOrder}
+              onOpenOrderStatus={() => {
+                setIsJustPlaced(false);
+                setIsOrderStatusOpen(true);
+              }}
+            />
           </div>
-        )}
+        </div>
+      </div>
 
-        {/* Menu Sections & Dishes */}
-        {displayedCategories.map((group) => (
-          <MenuSection
-            key={group.category}
-            category={group.category}
-            items={group.items}
-            getItemQuantity={getItemQuantity}
-            onOpenDetails={(item) => setSelectedItem(item)}
-            onAddToCart={(item) => handleAddToCart(item)}
-            onUpdateQuantity={handleUpdateQuantity}
-          />
-        ))}
-
-        {/* Cafe Footer & Info */}
-        <footer className="pt-6 pb-6 border-t border-[var(--brand-border)] space-y-2.5 text-center text-xs text-[var(--brand-muted)]">
-          <div className="flex items-center justify-center gap-1.5 font-bold text-sm text-[var(--brand-text)]">
-            <span className="font-brand text-base text-zinc-950">Dr. <span className="text-[#889E00]">Joos</span></span>
-            <span>Cafe, Indore</span>
-          </div>
-
-          <p className="text-[11px] text-[var(--brand-muted)]">
-            400, Clerk Colony Rd, MR 9, Indore, Madhya Pradesh
-          </p>
-
-          <div className="flex items-center justify-center gap-3 text-[10px] text-[var(--brand-muted)] pt-1">
-            <span className="flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              Pure Veg Kitchen
-            </span>
-            <span>•</span>
-            <span>FSSAI Lic. Certified</span>
-            <span>•</span>
-            <span>Taxes as applicable</span>
-          </div>
-        </footer>
-      </main>
-
-      {/* Floating Active Order Status Bar (when an order has been placed) */}
+      {/* Floating Active Order Status Bar (Mobile only) */}
       {!isOrderStatusOpen && (
-        <ActiveOrderWidget
-          order={placedOrder}
-          onOpenStatus={() => {
-            setIsJustPlaced(false);
-            setIsOrderStatusOpen(true);
-          }}
-          hasItemsInCart={cart.length > 0}
-        />
+        <div className="lg:hidden">
+          <ActiveOrderWidget
+            order={placedOrder}
+            onOpenStatus={() => {
+              setIsJustPlaced(false);
+              setIsOrderStatusOpen(true);
+            }}
+            hasItemsInCart={cart.length > 0}
+          />
+        </div>
       )}
 
-      {/* Sticky Bottom Cart Bar */}
-      <CartBar cart={cart} onOpenCart={() => setIsCartOpen(true)} />
+      {/* Sticky Bottom Cart Bar (Mobile only) */}
+      <div className="lg:hidden">
+        <CartBar cart={cart} onOpenCart={() => setIsCartOpen(true)} />
+      </div>
 
       {/* Item Detail Bottom Sheet */}
       <ItemBottomSheet

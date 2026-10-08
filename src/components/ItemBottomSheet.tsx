@@ -43,7 +43,7 @@ export const ItemBottomSheet: React.FC<ItemBottomSheetProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
       {/* Backdrop */}
       <div
         onClick={onClose}
@@ -51,8 +51,8 @@ export const ItemBottomSheet: React.FC<ItemBottomSheetProps> = ({
         aria-hidden="true"
       />
 
-      {/* Sheet Body */}
-      <div className="relative w-full max-w-md bg-white rounded-t-2xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden z-10 border-t border-[var(--brand-border)] animate-in slide-in-from-bottom duration-200">
+      {/* Sheet Body (Bottom Sheet on mobile, Centered Modal on desktop) */}
+      <div className="relative w-full max-w-md bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden z-10 border-t sm:border border-[var(--brand-border)] animate-in slide-in-from-bottom duration-200">
         {/* Close Button Header */}
         <div className="absolute top-3 right-3 z-20">
           <button

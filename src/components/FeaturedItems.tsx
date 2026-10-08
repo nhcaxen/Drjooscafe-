@@ -24,12 +24,12 @@ export const FeaturedItems: React.FC<FeaturedItemsProps> = ({
   if (popularItems.length === 0) return null;
 
   return (
-    <section className="mb-4">
-      <div className="flex items-center justify-between mb-2.5 px-4">
+    <section className="mb-5">
+      <div className="flex items-center justify-between mb-2.5 px-1 sm:px-0">
         <div className="flex items-center gap-1.5">
           {/* Flame kept in bold Red for Bestsellers */}
           <Flame className="w-4 h-4 text-red-600 fill-current" />
-          <h2 className="text-sm font-black text-[var(--brand-text)] tracking-tight">
+          <h2 className="text-sm sm:text-base font-black text-[var(--brand-text)] tracking-tight">
             Dr. Joos Bestsellers
           </h2>
         </div>
@@ -38,14 +38,14 @@ export const FeaturedItems: React.FC<FeaturedItemsProps> = ({
         </span>
       </div>
 
-      <div className="flex gap-3 overflow-x-auto no-scrollbar px-4 pb-1">
+      <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2 pt-0.5">
         {popularItems.map((item) => {
           const qty = getItemQuantity(item);
           return (
             <div
               key={item.id}
               onClick={() => onOpenItem(item)}
-              className="w-40 shrink-0 bg-white rounded-xl border border-[var(--brand-border)] p-2.5 flex flex-col justify-between shadow-2xs hover:border-[var(--brand-primary)] transition-all cursor-pointer select-none"
+              className="w-40 sm:w-46 shrink-0 bg-white rounded-xl border border-[var(--brand-border)] p-2.5 flex flex-col justify-between shadow-2xs hover:border-[var(--brand-primary)] hover:shadow-xs transition-all cursor-pointer select-none"
             >
               <div>
                 {/* Visual Thumbnail */}

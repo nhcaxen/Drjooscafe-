@@ -33,8 +33,8 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
         </span>
       </div>
 
-      {/* Cards List */}
-      <div className="space-y-2.5">
+      {/* Cards Responsive Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {items.map((item) => (
           <MenuItemCard
             key={item.id}

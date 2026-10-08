@@ -45,7 +45,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
       {/* Backdrop */}
       <div
         onClick={onClose}
@@ -54,9 +54,9 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
       />
 
       {/* Drawer Body */}
-      <div className="relative w-full max-w-md bg-white rounded-t-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden z-10 border-t border-[var(--brand-border)] animate-in slide-in-from-bottom duration-200">
-        {/* Grab Handle */}
-        <div className="w-10 h-1 bg-zinc-300 rounded-full mx-auto my-2.5 shrink-0" />
+      <div className="relative w-full max-w-md bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden z-10 border-t sm:border border-[var(--brand-border)] animate-in slide-in-from-bottom duration-200">
+        {/* Grab Handle (mobile only) */}
+        <div className="w-10 h-1 bg-zinc-300 rounded-full mx-auto my-2.5 shrink-0 sm:hidden" />
 
         {/* Drawer Header */}
         <div className="px-4 pb-3 border-b border-[var(--brand-border)] flex items-center justify-between">
